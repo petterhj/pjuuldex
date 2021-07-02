@@ -1,0 +1,25 @@
+[[source]]
+url = "https://pypi.org/simple"
+verify_ssl = true
+name = "pypi"
+
+[packages]
+django = "*"
+django-autoslug = "*"
+djangorestframework = "*"
+colorlog = "*"
+pillow = "*"
+requests = "*"
+beautifulsoup4 = "*"
+stringcase = "*"
+
+[dev-packages]
+whitenoise = "*"
+django-cors-headers = "*"
+black = "*"
+
+[scripts]
+api = "python manage.py runserver"
+
+[pipenv]
+allow_prereleases = true
