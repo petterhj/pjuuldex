@@ -12,6 +12,7 @@ pillow = "*"
 requests = "*"
 beautifulsoup4 = "*"
 stringcase = "*"
+pokemontcgsdk = "*"
 
 [dev-packages]
 whitenoise = "*"

@@ -25,3 +25,4 @@ $ yarn build
 * https://florianwoelki.github.io/vue-cirrus
 * https://cirrus-ui.netlify.app
 * https://pkmncards.com
+* https://pokemontcg.io/ (Pokémon TCG Developers)
