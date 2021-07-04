@@ -6,6 +6,15 @@ Pokémon TCG collection database.
 ## Backend
 
 ```sh
+# .env
+POKEDEX_SECRET_KEY=""
+POKEDEX_DEBUG=true
+POKEDEX_ALLOWED_HOSTS=localhost,127.0.0.1
+POKEDEX_SQLITE_DB_FILE="../data/db.sqlite3"
+POKEDEX_MEDIA_PATH="../media/"
+```
+
+```sh
 $ cd backend/
 $ pipenv shell
 $ pipenv install
@@ -13,6 +22,11 @@ $ pipenv run api # Run development server locally
 ```
 
 ## Frontend
+
+```sh
+# .env.development
+VITE_API_BASE_URL=http://localhost:8000
+```
 
 ```sh
 $ yarn install
