@@ -29,6 +29,7 @@ class CardVariantSerializer(serializers.ModelSerializer):
 
 
 class CardSerializer(serializers.ModelSerializer):
+    set = SetSerializer()
     variants = CardVariantSerializer(many=True)
     image = serializers.CharField()
     type = serializers.CharField(source='get_type_display')
