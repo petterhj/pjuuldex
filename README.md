@@ -16,8 +16,13 @@ POKEDEX_MEDIA_PATH="../media/"
 
 ```sh
 $ cd backend/
+$ pipenv install [--dev]
+
 $ pipenv shell
-$ pipenv install
+$ python manage.py makemigrations pokedex
+$ python manage.py migrate
+$ python manage.py createsuperuser
+
 $ pipenv run api # Run development server locally
 ```
 
