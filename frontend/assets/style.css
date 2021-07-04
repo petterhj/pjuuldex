@@ -1,0 +1,9 @@
+.navbar-brand {
+    font-weight: bold;
+}
+.navbar-brand img {
+    margin-right: .75rem;
+}
+article.feed {
+    margin-bottom: 2rem;
+}

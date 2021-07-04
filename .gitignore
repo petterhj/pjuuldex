@@ -1,7 +1,13 @@
 data/
 media/
+.yarn/
+__pycache__/
+migrations/
+node_modules/
 
+.env*
 *.log
 *.db
+.pnp.js
 
 settings.py
