@@ -31,11 +31,11 @@ class CardVariantSerializer(serializers.ModelSerializer):
 class CardSerializer(serializers.ModelSerializer):
     set = SetSerializer()
     variants = CardVariantSerializer(many=True)
-    image = serializers.CharField()
-    type = serializers.CharField(source='get_type_display')
-    stage = serializers.CharField(source='get_stage_display')
-    color = serializers.CharField(source='get_color_display')
-    rarity = serializers.CharField(source='get_rarity_display')
+    # image = serializers.CharField()
+    # type = serializers.CharField(source='get_type_display')
+    # stage = serializers.CharField(source='get_stage_display')
+    # color = serializers.CharField(source='get_color_display')
+    # rarity = serializers.CharField(source='get_rarity_display')
     inventory_count = serializers.IntegerField()
 
     class Meta:
