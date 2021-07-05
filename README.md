@@ -45,3 +45,4 @@ $ yarn build
 * https://cirrus-ui.netlify.app
 * https://pkmncards.com
 * https://pokemontcg.io/ (Pokémon TCG Developers)
+* https://github.com/PokemonTCG/pokemon-tcg-sdk-python

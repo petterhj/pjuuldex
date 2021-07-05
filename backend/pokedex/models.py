@@ -1,12 +1,12 @@
-import os
 import logging
+import os
 
 from autoslug import AutoSlugField
 from django.conf import settings
 from django.db import models
 from django.db.models import Count
+from django.utils.text import slugify
 from stringcase import titlecase
-
 
 logger = logging.getLogger(__name__)
 
@@ -15,25 +15,34 @@ def media_path():
     return settings.FILE_MEDIA_PATH
 
 
+def set_logo_path(instance, filename):
+    return os.path.join("sets", "{}-{}.{}".format(
+        instance.slug,
+        "logo",
+        filename.split(".")[-1],
+    ))
+
+
+def set_symbol_path(instance, filename):
+    return os.path.join("sets", "{}-{}.{}".format(
+        instance.slug,
+        "symbol",
+        filename.split(".")[-1],
+    ))
+
+
 class Set(models.Model):
     slug = AutoSlugField(populate_from="name")
+    code = models.CharField(max_length=10, unique=True)
     name = models.CharField(max_length=125)
-    code = models.CharField(max_length=5, unique=True)
+    series = models.CharField(max_length=125)
+    release_date = models.DateField(editable=True, blank=True, null=True)
+    logo = models.ImageField(upload_to=set_logo_path, null=True, blank=True)
+    symbol = models.ImageField(upload_to=set_symbol_path, null=True, blank=True)
     card_count = models.PositiveIntegerField()
 
     def __str__(self):
         return f"{self.name} ({self.code})"
-
-
-def card_image_path(instance, filename):
-    ext = filename.split(".")[-1]
-    filename = "{}-{}-{}.{}".format(
-        instance.card.slug,
-        instance.card.number,
-        instance.variant.slug,
-        ext,
-    )
-    return os.path.join("cards", instance.card.set.slug, filename)
 
 
 class Variant(models.Model):
@@ -44,12 +53,21 @@ class Variant(models.Model):
         return self.name
 
 
+def card_variant_image_path(instance, filename):
+    return os.path.join("cards", instance.card.set.slug, "{}-{}-{}.{}".format(
+        instance.card.slug,
+        instance.card.number,
+        instance.variant.slug,
+        filename.split(".")[-1],
+    ))
+
+
 class CardVariant(models.Model):
     card = models.ForeignKey("Card", on_delete=models.CASCADE, related_name="variants")
     variant = models.ForeignKey(
         "Variant", on_delete=models.SET_NULL, related_name="cards", null=True
     )
-    image = models.ImageField(upload_to=card_image_path, null=True, blank=True)
+    image = models.ImageField(upload_to=card_variant_image_path, null=True, blank=True)
 
     class Meta:
         unique_together = ["card", "variant"]
@@ -64,53 +82,27 @@ class CardVariant(models.Model):
         )
 
 
-class Card(models.Model):
-    TYPES = ((t, titlecase(t)) for t in [
-        "pokemon", "trainer", "supporter", "item", "energy",
-        # "pokemon-tool", "stadium", "special-energy",
-        # "basic-energy", "technical-machine", "rockets-secret-machine",
-        # "pokemon-tool-f", "goldenrod-game-corner",
-    ])
-    STAGES = ((s, titlecase(s)) for s in [
-        "basic", "stage-1", "stage-2",
-        # vmax, mega, level-up, break,
-        # baby, legend, restored
-    ])
-    COLORS = ((c, c.capitalize()) for c in [
-        "grass", "water", "fire", "lightning",
-        "psychic", "fighting", "colorless",
-        # "fairy", "dragon", "darkness", "metal",
-    ])
-    RARITY = ((r, titlecase(r)) for r in [
-        "common", "uncommon", "rare", "rare-holo",
-        # promo, rare-ultra, rare-secret, rare-rainbow,
-        # rare-holo-uppercase-ex, rare-holo-gx, rare-shiny,
-        # rare-holo-lowercase-ex, rare-holo-v, rare-holo-lv-x,
-        # rare-holo-vmax, rare-shiny-gx, rare-break, rare-prism-star,
-        # rare-prime, rare-holo-star, legend, rare-shining, rare-ace,
-        # amazing-rare, rare-shiny-v, rare-shiny-vmax
-    ])
+def card_image_path(instance, filename):
+    return os.path.join("cards", instance.set.slug, "{}-{}.{}".format(
+        instance.slug,
+        instance.number,
+        filename.split(".")[-1],
+    ))
 
+
+class Card(models.Model):
     set = models.ForeignKey("Set", on_delete=models.CASCADE, related_name="cards")
     slug = AutoSlugField(populate_from="name", unique_with=["set__code"])
     name = models.CharField(max_length=125, blank=True)
     number = models.PositiveIntegerField()
+    image = models.ImageField(upload_to=card_image_path, null=True, blank=True)
 
-    type = models.CharField(max_length=25, choices=TYPES, blank=True, null=True)
-    stage = models.CharField(max_length=10, choices=STAGES, blank=True, null=True)
-    color = models.CharField(max_length=10, choices=COLORS, blank=True, null=True)
-    rarity = models.CharField(max_length=25, choices=RARITY, blank=True, null=True)
+    supertype = models.CharField(max_length=75, blank=True, null=True)
+    subtype = models.CharField(max_length=75, blank=True, null=True)
+    type = models.CharField(max_length=75, blank=True, null=True)
     hp = models.PositiveIntegerField(blank=True, null=True)
+    rarity = models.CharField(max_length=25, blank=True, null=True)
     illustrator = models.CharField(max_length=125, blank=True)
-
-    @property
-    def image(self):
-        for variant in self.variants.annotate(
-            inventory_count=Count("inventory")
-        ).order_by("-inventory_count"):
-            if variant.image:
-                return variant.image.url
-        return None
 
     @property
     def inventory_count(self):
@@ -137,7 +129,7 @@ class CollectedCard(models.Model):
     GRADES = (
         ("1", "Poor"),
         ("2", "OK"),
-        ("2", "Good"),
+        ("3", "Good"),
         ("4", "Excellent"),
     )
 
@@ -152,6 +144,9 @@ class CollectedCard(models.Model):
         max_length=1, choices=GRADES, blank=True, null=True
     )
     bought_date = models.DateField(editable=True, blank=True, null=True)
+
+    class Meta:
+        ordering = ["-grade"]
 
     def __str__(self):
         return f"{self.variant}"

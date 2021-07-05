@@ -18,7 +18,6 @@ class SetAdmin(admin.ModelAdmin):
 @admin.register(Card)
 class CardAdmin(admin.ModelAdmin):
     list_display = ("name", "number", "type", "rarity", "set", "slug",)
-    list_editable = ("rarity", "type",)
     readonly_fields = ("slug",)
 
 
