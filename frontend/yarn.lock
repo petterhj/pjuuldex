@@ -145,14 +145,14 @@
   resolved "https://registry.yarnpkg.com/@vue/shared/-/shared-3.1.4.tgz#c14c461ec42ea2c1556e86f60b0354341d91adc3"
   integrity sha512-6O45kZAmkLvzGLToBxEz4lR2W6kXohCtebV2UxjH9GXjd8X9AhEn68FN9eNanFtWNzvgw1hqd6HkPRVQalqf7Q==
 
-"@vuelidate/core@^2.0.0-alpha.19":
+"@vuelidate/core@^2.0.0-alpha.21":
   version "2.0.0-alpha.21"
   resolved "https://registry.yarnpkg.com/@vuelidate/core/-/core-2.0.0-alpha.21.tgz#37077421007b8ff925840ee937e9e821fbc03f12"
   integrity sha512-Qk8UzmadmVO1fg527lRKzI29kpQf4wW1XZICerIZuhDinm3VDsq+lG2LSI21NV1uGbNJLdmDTYWF+tKvk+zLoQ==
   dependencies:
     vue-demi "^0.9.1"
 
-"@vuelidate/validators@^2.0.0-alpha.17":
+"@vuelidate/validators@^2.0.0-alpha.18":
   version "2.0.0-alpha.18"
   resolved "https://registry.yarnpkg.com/@vuelidate/validators/-/validators-2.0.0-alpha.18.tgz#4e6008ed6d098f9a1ffd20b4fc06730c1cbc24fb"
   integrity sha512-JLH5uoynR6lLzmzGjb6sqxmDng1BB+FUpoKb38BNqUheM7ZMJeetZVZ9T/PUL5K8btLgoEqrPHL+SWHrOwIm7w==
@@ -1912,7 +1912,7 @@ vue@^3.0.0, vue@^3.0.5:
     "@vue/runtime-dom" "3.1.4"
     "@vue/shared" "3.1.4"
 
-vuex@next:
+vuex@^4.0.2:
   version "4.0.2"
   resolved "https://registry.yarnpkg.com/vuex/-/vuex-4.0.2.tgz#f896dbd5bf2a0e963f00c67e9b610de749ccacc9"
   integrity sha512-M6r8uxELjZIK8kTKDGgZTYX/ahzblnzC4isU1tpmEuOIIKmV+TRdc+H4s8ds2NuZ7wpUTdGRzJRtoj+lI+pc0Q==
