@@ -1,11 +1,14 @@
-data/
-media/
+.venv/
 .yarn/
 __pycache__/
 migrations/
 node_modules/
+dist/
+data/
+media/
 
 .env*
 *.log
 *.db
 .pnp.js
+*.tar

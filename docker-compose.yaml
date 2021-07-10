@@ -1,0 +1,25 @@
+version: '3'
+
+services:
+  app:
+    build:
+      context: .
+      dockerfile: ./compose/app/Dockerfile
+    image: pjuuldex
+    volumes:
+      - ./data:/app/data
+      - ./media:/app/media
+      - ./dist:/app/dist
+    expose:
+      - 8000
+    env_file: .env
+
+  nginx:
+    build: ./compose/nginx
+    volumes:
+      - ./dist:/app/dist
+      - ./media:/app/media
+    ports:
+      - 1337:8080
+    depends_on:
+      - app
