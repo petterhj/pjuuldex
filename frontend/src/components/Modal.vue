@@ -1,11 +1,7 @@
 <template>
-  <div class="pd-modal p-2" :id="modalId">
-    <a href="#close" class="modal-close-btn" aria-label="Close">
-      <span class="icon">
-        <svg aria-hidden="true" focusable="false" data-prefix="fas" data-icon="times" class="svg-inline--fa fa-times fa-w-11 fa-wrapper" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 352 512">
-          <path fill="currentColor" d="M242.72 256l100.07-100.07c12.28-12.28 12.28-32.19 0-44.48l-22.24-22.24c-12.28-12.28-32.19-12.28-44.48 0L176 189.28 75.93 89.21c-12.28-12.28-32.19-12.28-44.48 0L9.21 111.45c-12.28 12.28-12.28 32.19 0 44.48L109.28 256 9.21 356.07c-12.28 12.28-12.28 32.19 0 44.48l22.24 22.24c12.28 12.28 32.2 12.28 44.48 0L176 322.72l100.07 100.07c12.28 12.28 32.2 12.28 44.48 0l22.24-22.24c12.28-12.28 12.28-32.19 0-44.48L242.72 256z"></path>
-        </svg>
-      </span>
+  <div class="pd-modal p-2" :id="modalId" @keydown.esc="close" tabindex="0">
+    <a class="modal-close-btn" aria-label="Close" ref="close-btn" @click="close">
+      <i class="zmdi zmdi-close"></i>
     </a>
 
     <div class="modal-header" v-if="title">
@@ -29,15 +25,11 @@ export default {
       type: String,
     }
   },
-  mounted() {
-    document.addEventListener('keyup', function(e) {
-      if(e.key === "Escape") {
-          const modals = document.querySelectorAll('.modal-close-btn');
-          for (const modal of modals) {
-              modal.click();
-          }
-        }
-    });   
+  methods: {
+    close(e) {
+      this.$emit('closed')
+      window.location.hash = 'close'
+    }
   }
 }
 </script>
@@ -61,12 +53,15 @@ export default {
 
 .modal-close-btn {
   position: absolute;
-  top: 1rem;
-  right: 1rem;
+  top: 0.5rem;
+  right: 1.5rem;
   font-size: 0.6rem;
   padding: 0;
+  cursor: pointer;
 }
-.modal-close-btn .icon { width: 1rem; }
+.modal-close-btn {
+  font-size: 1.75rem;
+}
 
 .modal-body {
   flex: 1 1 auto;

@@ -2,25 +2,24 @@
   <modal modal-id="modal-card-select" title="Select card">
     <div class="grid grid-cols-6 grid-gap-0" v-if="set">
       <a 
-        v-for="i in set.card_count"
-        :key="i"
+        v-for="card in set.cards"
+        :key="card.id"
         class="card-tile"
-        :href="'#card'+i"
-      >{{ i }}</a>
+        :href="'#card'+card.number"
+      >{{ card.number }}</a>
     </div>
   </modal>
 </template>
 
 <script>
+import { mapGetters } from 'vuex'
 import Modal from './Modal.vue';
 
 export default {
   components: { Modal },
-  props: {
-    set: {
-      type: Object
-    }
-  }
+  computed: {
+    ...mapGetters('main', ['set',]),
+  },
 }
 </script>
 

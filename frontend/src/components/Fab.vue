@@ -29,6 +29,7 @@ button.fab {
   min-width: auto;
   box-shadow: 0 5px 12px 0 rgb(42 51 83 / 12%), 0 0 5px rgb(0 0 0 / 6%);
   opacity: 0.8;
+  font-size: 1.5rem;
 }
 button.fab:hover {
   opacity: 1;

@@ -1,7 +1,8 @@
 <template>
   <div>
     <div class="hero bg-link-dark" v-if="set">
-      <div class="hero-body py-1 px-4">
+      <div class="hero-body py-1 pl-3">
+        <img :src="set.symbol" class="mr-3" />
         <div class="content m-0">
           <h4 class="title white">{{ set.name }}</h4>
           <h6 class="subtitle text-gray-300">{{ set.card_count }} cards</h6>
@@ -9,35 +10,40 @@
       </div>
     </div>
 
-    <section class="m-0 py-2" v-if="cards">
+    <section class="m-0 py-2" v-if="set && set.cards.length > 0">
       <div
         class="m-2 mb-3 p-2 card"
-        v-for="card in cards"
+        v-for="card in filteredCards"
         :key="card.id"
         :class="{dim: card.inventory_count === 0}"
         :id="'card'+card.number"
         @click="selectCard(card)"
       >
-        <card
-          :card="card"
-        />
+        <card :card="card" />
       </div>
     </section>
+    <!-- <section class="m-4" v-else>
+      <span class="text-gray-600">Cards not imported yet!</span>
+    </section> -->
 
-    <card-modal :card="activeCard" />
-    <card-select-modal :set="set" />
+    <card-modal
+      :card="activeCard"
+      @closed="modalClosed" />
 
-    <fab @click="openModal('modal-card-select')">
-      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
-        <path fill="currentColor" d="M 4 4 L 4 8 L 8 8 L 8 4 L 4 4 z M 10 4 L 10 8 L 14 8 L 14 4 L 10 4 z M 16 4 L 16 8 L 20 8 L 20 4 L 16 4 z M 4 10 L 4 14 L 8 14 L 8 10 L 4 10 z M 10 10 L 10 14 L 14 14 L 14 10 L 10 10 z M 16 10 L 16 14 L 20 14 L 20 10 L 16 10 z M 4 16 L 4 20 L 8 20 L 8 16 L 4 16 z M 10 16 L 10 20 L 14 20 L 14 16 L 10 16 z M 16 16 L 16 20 L 20 20 L 20 16 L 16 16 z"/>
-      </svg>
+    <card-select-modal />
+
+    <fab
+      v-if="set && set.cards.length > 0"
+      @click="openModal('modal-card-select')"
+    >
+      <i class="zmdi zmdi-dialpad"></i>
     </fab>
     
   </div>
 </template>
 
 <script>
-import http from '../http';
+import { mapGetters, mapActions } from 'vuex'
 import Card from '../components/Card.vue';
 import CardModal from '../components/CardModal.vue';
 import CardSelectModal from '../components/CardSelectModal.vue';
@@ -52,50 +58,39 @@ export default {
   },
   data() {
     return {
-      set: null,
-      cards: [],
+      hideCollected: false,
       activeCard: null,
     }
   },
+  computed: {
+    ...mapGetters('main', ['set',]),
+    filteredCards() {
+      return this.set.cards.filter(card => {
+        if (this.hideCollected)
+          return card.inventory_count === 0
+        return true
+      })
+    }
+  },
   methods: {
-    getSet(slug) {
-      console.log(`Fetching set details for ${slug}`)
-      http.get(`sets/${slug}`)
-        .then((response) => {
-          this.set = response.data
-      
-          http.get(`sets/${slug}/cards`)
-            .then((response) => {
-              this.cards = response.data
-            }, (error) => {
-              
-            }
-          )
-        }, (error) => {
-          this.$router.replace({ name: 'error', params: {
-            status: error.response.status,
-            message: error.response.data.detail
-          }})
-        }
-      )
-    },
+    ...mapActions('main', ['getSet']),
     selectCard(card) {
-      console.log("select")
       this.activeCard = card
-      console.log(this.activeCard)
+      this.openModal('modal-card')
     },
     openModal(target){
       window.location.hash = target;
-    }
+    },
+    modalClosed(card) {
+      if (card)
+        card.variants.sort((a, b) => b.inventory_count - a.inventory_count)
+      this.activeCard = null
+    },
   },
   watch: {
     '$route.params.slug'(slug) {
-      this.getSet(slug)
-    },
-    activeCard(card) {
-      console.log("Card changed!")
-      console.log(card)
-      this.openModal('modal-card')
+      if (slug)
+        this.getSet(slug)
     }
   },
   mounted() {
@@ -107,6 +102,11 @@ export default {
 </script>
 
 <style scoped>
+.hero img {
+  width: 40px;
+  height: 40px;
+}
+
 .card { opacity: 0.9; }
 .card:hover { opacity: 1; cursor: pointer; }
 .card.dim { opacity: 0.3; }

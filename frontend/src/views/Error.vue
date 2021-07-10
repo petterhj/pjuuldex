@@ -1,6 +1,7 @@
 <template>
   <div>
     <span class="is-size-3">{{ status }}: {{ message }}</span>
+    <hr>
     {{$router}}
   </div>
 </template>
@@ -9,9 +10,9 @@
 export default {
   props: {
     status: {
-      type: Number,
+      type: String,
       required: false,
-      default: 404
+      default: "404"
     },
     message: {
       type: String,

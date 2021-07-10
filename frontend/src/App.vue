@@ -1,41 +1,23 @@
 <template>
-  <div>
-    <v-navbar :dark="true" class="mb-0">
-      <template v-slot:brandTitle>pjuuldex</template>
-      <v-nav-region position="left" class="ml-3">
-        <v-nav-dropdown animated>
-          <template v-slot:title>Sets</template>
-            <v-navbar-item
-              v-for="set in sets"
-              :key="set.id"
-              @click="loadSet(set.slug)"
-            >
-              {{ set.name }}
-            </v-navbar-item>
-        </v-nav-dropdown>
-      </v-nav-region>
+  <div class="layout">
+    <navbar />
 
-      <v-nav-region position="right">
-        <v-navbar-item>Admin</v-navbar-item>
-      </v-nav-region>
-    </v-navbar>
     <section>
       <router-view />
     </section>
+
+    <footer>
+      <img src="/assets/images/table.png">
+    </footer>
   </div>
 </template>
 
 <script>
-import http from "./http";
+import { mapActions } from 'vuex'
+import Navbar from './components/Navbar.vue'
 
 export default {
-  components: { },
-  data() {
-    return {
-      sets: [],
-      cards: [],
-    }
-  },
+  components: { Navbar },
   watch: {
     '$route'(to) {
       const bodyEl = document.body;
@@ -48,31 +30,44 @@ export default {
     },
   },
   methods: {
-    loadSet(set_slug) {
-      console.log(`Loading set: ${set_slug}`)
-      this.$router.push({
-        name: 'set',
-        params: { slug: set_slug }
-      })
-    }
+    ...mapActions('main', ['getSets']),
+    ...mapActions('auth', ['getUser'])
   },
-  mounted() {
-    http.get('/sets')
-      .then((response) => {
-        this.sets = response.data
-      }, (error) => {
-        this.$router.replace({ name: 'error', params: {
-          status: error.response.status,
-          message: error.response.data.detail
-        }})
-      }
-    )
-  }
+  created() {
+    this.getSets()
+    this.getUser()
+  },
 }
 </script>
 
 <style>
+body, #app, .layout {
+  height: 100%;
+}
 body.has-overlay {
   overflow: hidden;
+}
+
+.layout {
+  display: flex;
+  flex-direction: column;
+}
+.layout > .header,
+.layout > footer { flex: 0 1 auto; }
+.layout > section { flex: 1 1 auto; }
+
+footer {
+  position: relative;
+  min-height: 85px;
+  width: 100%;
+  background: pink;
+  background-image: url("/assets/images/border.png");
+  z-index: -1;
+  opacity: 0.25;
+}
+footer > img {
+   position: absolute;
+   bottom: 0;
+   right: 5vh;
 }
 </style>
