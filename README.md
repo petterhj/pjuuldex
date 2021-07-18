@@ -31,6 +31,13 @@ $ make run-frontend
 VITE_APP_BASE_PATH=/path/
 VITE_API_BASE_URL=http://localhost:8000/api/
 ```
+
+```sh
+$ docker-compose build
+```
+
+## Test locally
+
 ```sh
 # ./.env.local
 DJANGO_ALLOWED_HOSTS=localhost,127.0.0.1
@@ -44,23 +51,19 @@ DJANGO_STATIC_URL=/pjuuldex/assets/
 POKEMONTCG_IO_API_KEY=
 ```
 
-
 ```sh
-$ yarn build
-$ docker-compose build # and/or
-$ docker-compose up [--build]
-
-$ docker save -o pjuuldex.tar pjuuldex
+$ docker-compose up # Test locally
 ```
 
 ## Deploy
 
 ```sh
+$ docker save -o pjuuldex.tar pjuuldex
 $ scp pjuuldex.tar vps:/path/to/pjuuldex.tar
 # --
 $ docker load < pjuuldex.tar
 $ docker run \
-    --env-file .env \
+    --env-file .env.production \
     -p 8081:8000 \
     -v data:/app/data/ \
     -v media:/app/media/ \
