@@ -28,8 +28,8 @@ $ make run-frontend
 
 ```sh
 # ./.env.build
-VITE_APP_BASE_PATH=/path/
-VITE_API_BASE_URL=http://localhost:8000/api/
+VITE_APP_BASE_PATH=/pjuuldex/
+VITE_API_BASE_URL=http://localhost:1337/pjuuldex/api/
 ```
 
 ```sh
