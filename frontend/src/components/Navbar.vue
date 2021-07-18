@@ -15,7 +15,9 @@
             :key="set.id"
             @click="loadSet(set.slug)"
           >
-            <div class="icon"><img :src="set.symbol" alt="symbol"></div>
+            <div class="icon">
+              <img :src="set.symbol" alt="symbol" v-if="set.symbol">
+            </div>
             <div class="label">{{ set.name }}</div>
           </v-navbar-item>
       </v-nav-dropdown>

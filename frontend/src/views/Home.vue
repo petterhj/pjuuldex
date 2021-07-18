@@ -33,7 +33,7 @@
           <tbody>
             <tr v-for="set in sets" :key="set.id">
               <td>
-                <img class="set-image" :src="set.symbol" alt="card">
+                <img class="set-image" :src="set.symbol" v-if="set.symbol" alt="card">
               </td>
               <td>
                 <router-link :to="{name: 'set', params: {slug: set.slug}}">

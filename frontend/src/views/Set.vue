@@ -2,7 +2,9 @@
   <div>
     <div class="hero bg-link-dark" v-if="set">
       <div class="hero-body py-1 pl-3">
-        <img :src="set.symbol" class="mr-3" />
+        <div class="symbol mr-3">
+          <img :src="set.symbol" v-if="set.symbol" />
+        </div>
         <div class="content m-0">
           <h4 class="title white">{{ set.name }}</h4>
           <h6 class="subtitle text-gray-300">{{ set.card_count }} cards</h6>
@@ -22,9 +24,6 @@
         <card :card="card" />
       </div>
     </section>
-    <!-- <section class="m-4" v-else>
-      <span class="text-gray-600">Cards not imported yet!</span>
-    </section> -->
 
     <card-modal
       :card="activeCard"
@@ -102,9 +101,13 @@ export default {
 </script>
 
 <style scoped>
-.hero img {
+.hero div.symbol {
   width: 40px;
   height: 40px;
+}
+.hero div.symbol > img {
+  width: inherit;
+  height: inherit;
 }
 
 .card { opacity: 0.9; }
