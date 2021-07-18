@@ -2,12 +2,13 @@
 
 echo "Migrating database..."
 
+python manage.py makemigrations pokedex
 python manage.py migrate --noinput
 
 echo "Collecting statc files, target ${DJANGO_STATIC_ROOT}"
 
 cp -r /app/tmp/* /app/dist
-rm -r /app/tmp
+rm -r /app/tmp/
 
 python manage.py collectstatic --noinput
 

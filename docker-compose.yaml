@@ -12,7 +12,7 @@ services:
       - ./dist:/app/dist
     expose:
       - 8000
-    env_file: .env
+    env_file: .env.local
 
   nginx:
     build: ./compose/nginx

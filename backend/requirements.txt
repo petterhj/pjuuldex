@@ -2,9 +2,9 @@ beautifulsoup4
 dj-rest-auth
 django
 django-autoslug
+django-cors-headers
 django-environ
 djangorestframework
-gunicorn
 pillow
 pokemontcgsdk
 requests

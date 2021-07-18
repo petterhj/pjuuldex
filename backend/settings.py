@@ -32,7 +32,7 @@ INSTALLED_APPS = [
     "django.contrib.messages",
     "django.contrib.staticfiles",
 
-    # "corsheaders",
+    "corsheaders",
     "rest_framework",
     "rest_framework.authtoken",
     "dj_rest_auth",
@@ -42,7 +42,7 @@ INSTALLED_APPS = [
 
 MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
-    # "corsheaders.middleware.CorsMiddleware",
+    "corsheaders.middleware.CorsMiddleware",
     "django.contrib.sessions.middleware.SessionMiddleware",
     "django.middleware.common.CommonMiddleware",
     "django.middleware.csrf.CsrfViewMiddleware",
@@ -78,6 +78,11 @@ REST_FRAMEWORK = {
         "rest_framework.authentication.TokenAuthentication",
     )
 }
+
+# CORS
+# https://github.com/adamchainz/django-cors-headers
+
+CORS_ALLOW_ALL_ORIGINS = DEBUG
 
 
 # Database

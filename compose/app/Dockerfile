@@ -1,6 +1,5 @@
 FROM node:alpine
 
-
 COPY ./frontend /src
 COPY ./.env.build /src/.env
 RUN cat /src/.env
