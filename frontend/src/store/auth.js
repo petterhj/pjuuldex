@@ -60,7 +60,7 @@ export default {
           this.commit('main/setRecentInventory', [])
         });
     },
-    getUser({ commit, getters  }) {
+    getUser({ commit, getters }) {
       if (!getters.isAuthenticated)
         return
       console.log("Fetching user data")

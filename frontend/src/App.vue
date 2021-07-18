@@ -3,6 +3,7 @@
     <navbar />
 
     <section>
+      <loading-indicator v-if="loadingState" />
       <router-view />
     </section>
 
@@ -13,11 +14,15 @@
 </template>
 
 <script>
-import { mapActions } from 'vuex'
+import { mapActions, mapGetters } from 'vuex'
 import Navbar from './components/Navbar.vue'
+import LoadingIndicator from './components/LoadingIndicator.vue'
 
 export default {
-  components: { Navbar },
+  components: { Navbar, LoadingIndicator },
+  computed: {
+    ...mapGetters('main', ['loadingState']),
+  },
   watch: {
     '$route'(to) {
       const bodyEl = document.body;
@@ -54,7 +59,10 @@ body.has-overlay {
 }
 .layout > .header,
 .layout > footer { flex: 0 1 auto; }
-.layout > section { flex: 1 1 auto; }
+.layout > section { 
+  position: relative;
+  flex: 1 1 auto;
+}
 
 footer {
   position: relative;

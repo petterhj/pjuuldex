@@ -3,16 +3,21 @@ import http from '../http';
 export default {
   namespaced: true,
   state: {
+    loadingState: false,
     sets: [],
     currentSet: null,
     recentInventory: [],
   },
   getters: {
+    loadingState: state => state.loadingState,
     sets: state => state.sets,
     set: state => state.currentSet,
     recentInventory: state => state.recentInventory,
   },
   mutations: {
+    setLoadingState(state, isLoading) {
+      state.loadingState = isLoading
+    },
     setSets(state, sets) {
       state.sets = sets
     },
@@ -58,23 +63,29 @@ export default {
   },
   actions: {
     getSets({ commit }) {
+      console.log('Fetching sets...')
+      commit('setLoadingState', true)
       return http.get('sets/')
         .then((response) => {
           commit('setSets', response.data)
         })
         .catch((error) => {
           commit('setSets', [])
-        });
+        })
+        .finally(() => commit('setLoadingState', false));
     },
     getSet({ commit }, set_slug) {
       console.log(`Fetching set ${set_slug}...`)
+      commit('setLoadingState', true)
+      commit('setSet', null)
       return http.get(`sets/${set_slug}/`)
         .then((response) => {
           commit('setSet', response.data)
         })
         .catch((error) => {
-          commit('setSet', null)
-        });
+          console.error("Could not fetch set")
+        })
+        .finally(() => commit('setLoadingState', false))
     },
 
     addInventory({ commit, dispatc }, variant_id) {
