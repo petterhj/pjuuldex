@@ -1,8 +1,6 @@
 <template>
-  <div>
-    <span class="is-size-3">{{ status }}: {{ message }}</span>
-    <hr>
-    {{$router}}
+  <div class="error-message space xlarge">
+    <b>{{ status }}: {{ message }}</b>
   </div>
 </template>
 
@@ -22,3 +20,9 @@ export default {
   },
 }
 </script>
+
+<style scoped>
+.error-message {
+  text-align: center;
+}
+</style>
