@@ -29,53 +29,39 @@
     <section class="m-6" v-else>
       <section class="mb-6">
         <h6>Sets</h6>
-        <table class="set-table table small borderless">
-          <tbody>
-            <tr v-for="set in sets" :key="set.id">
-              <td>
-                <img class="set-image" :src="set.symbol" v-if="set.symbol" alt="card">
-              </td>
-              <td>
-                <router-link :to="{name: 'set', params: {slug: set.slug}}">
-                  {{ set.name }}
-                </router-link>
-              </td>
-              <td>
-                <div class="progress-bar">
-                  <div
-                    :style="'width: '+getSetProgressPercent(set.collected_count, set.card_count)+'%'"
-                    class="progress"
-                  >
-                  </div>
-                  <div class="label">
-                    {{ set.collected_count }}/{{ set.card_count }} ({{getSetProgressPercent(set.collected_count, set.card_count)}} %)
-                  </div>
-                </div>
-              </td>
-            </tr>
-          </tbody>
-        </table>
+        <div class="set-progress mb-2" v-for="set in sets" :key="set.id">
+          <div>
+            <img
+              class="set-image" 
+              :src="set.symbol"
+              v-if="set.symbol"
+              alt="card"
+              style="max-height: 24px;"
+            >
+          </div>
+          <div>
+            <router-link :to="{name: 'set', params: {slug: set.slug}}">
+              {{ set.name }}
+            </router-link>
+            <progress-bar
+              :card-count="set.card_count"
+              :collected-count="set.collected_count"
+            />
+          </div>
+        </div>
       </section>
 
       <section>
         <h6>Recent</h6>
-        <table class="recent-table table small borderless">
-          <tbody>
-            <tr v-for="inventory in recentInventory" :key="inventory.id">
-              <td>
-                <img class="card-image" :src="inventory.card.image" alt="card">
-              </td>
-              <td>{{ inventory.card.name }}</td>
-              <td>{{ inventory.variant.name }}</td>
-              <td>
-                <router-link :to="{name: 'set', params: {slug: inventory.set.slug}}">
-                  {{ inventory.set.name }}
-                </router-link>
-              </td>
-              <td>{{ inventory.updated_date }}</td>
-            </tr>
-          </tbody>
-        </table>
+        <div class="recent-inventory-card mb-2" v-for="inventory in recentInventory" :key="inventory.id">
+          <img class="card-image" :src="inventory.card.image" alt="card">
+          <span><b>{{ inventory.card.name }}</b></span>
+          <span><i>{{ inventory.variant.name }}</i></span>
+          <router-link :to="{name: 'set', params: {slug: inventory.set.slug}}">
+            {{ inventory.set.name }}
+          </router-link>
+          <span>{{ inventory.updated_date }}</span>
+        </div>
       </section>
     </section>
   </div>
@@ -84,9 +70,10 @@
 <script>
 import { mapActions, mapGetters } from 'vuex'
 import LoginForm from '../components/LoginForm.vue'
+import ProgressBar from '../components/ProgressBar.vue'
 
 export default {
-  components: { LoginForm },
+  components: { LoginForm, ProgressBar },
   computed: {
     ...mapGetters(
       'auth', [
@@ -100,9 +87,9 @@ export default {
   },
   methods: {
     ...mapActions('main', ['getRecentInventory']),
-    getSetProgressPercent(collected, total) {
-      return Math.round((collected / total) * 100)
-    }
+    // getSetProgressPercent(collected, total) {
+    //   return Math.round((collected / total) * 100)
+    // }
   },
   mounted() {
     if (this.isAuthenticated)
@@ -113,48 +100,53 @@ export default {
 
 <style scoped>
 .hero img {
-  width: 85px;
-  height: 85px;
+  width: 65px;
+  height: 65px;
+  margin: 10px;
 }
-.table {
-  text-align: left;
-  font-size: 0.9rem;
-}
-.table td { vertical-align: middle; }
-.table tr td:first-child {
-  width: 50px;
+
+.set-progress { display: flex; }
+.set-progress > div:nth-child(1) {
+  flex: 0 1 auto;
+  width: 2rem;
+  margin-right: 1rem;
   text-align: center;
 }
-.table tr td:nth-child(2) { width: 200px; }
-.table img.set-image {
-  max-height: 25px;
-  max-width: 25px;  
+.set-progress > div:nth-child(2) {
+  flex: 1 1 auto;
+  display: grid;
+  grid-template-columns: 2fr 3fr;
 }
-.table img.card-image {
+@media screen and (max-width: 767px) {
+  .set-progress > div:nth-child(2) {
+    display: block;
+  }
+}
+
+.recent-inventory-card {
+  font-size: 0.8rem;
+  display: grid;
+  grid-template-columns: 60px 2fr 2fr 2fr 1fr;
+}
+@media screen and (max-width: 767px) {
+  .recent-inventory-card {
+    grid-template-columns: 60px 1fr auto;
+  }
+  .recent-inventory-card *:nth-child(1) {
+    grid-area: 1 / 1 / span 3 / 2;
+  }
+  .recent-inventory-card *:nth-child(4) {
+    grid-area: 2 / 2 / 3 / span 2;
+  }
+  .recent-inventory-card *:nth-child(5) {
+    grid-area: 3 / 2 / 4 / span 2;
+  }
+}
+.recent-inventory-card img {
   max-height: 40px;
   max-width: 55px;
   border: 1px solid #999;
   border-radius: 2px;
   background-color: #CCC;
-}
-
-.progress-bar {
-  margin-top: 5px;
-  position: relative;
-  height: 1.25rem;
-  background: #363636;
-  border-radius: 6px;
-}
-.progress-bar > div.progress {
-  height: inherit;
-  background: #0dd157;
-  border-radius: inherit;
-}
-.progress-bar > div.label {
-  position: absolute;
-  top: 0;
-  left: 0.5rem;
-  color: white;
-  font-size: 0.7rem;
 }
 </style>
