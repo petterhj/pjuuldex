@@ -5,7 +5,9 @@
     :disableMobileNavbar="true"
   >
     <template v-slot:brandTitle>
-      <router-link :to="{ name: 'home' }">pjuuldex</router-link>
+      <router-link :to="{ name: 'home' }">
+        <img src="../assets/logo.png" alt="logo" title="pjuuldex" />
+      </router-link>
     </template>
     <v-nav-region position="left" class="ml-3">
       <v-nav-dropdown animated v-if="sets && sets.length > 0">
@@ -51,7 +53,10 @@ export default {
 }
 </script>
 
-<style scoped>
+<style>
+.header-brand img { height: 2rem; }
+.header-brand a { padding: 0 !important; }
+
 .nav-item {
   justify-content: left;
   display: flex;
