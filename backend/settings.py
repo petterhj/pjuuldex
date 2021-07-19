@@ -18,6 +18,11 @@ import environ
 env = environ.Env()
 
 BASE_DIR = Path(__file__).resolve().parent
+DEV_ENV_FILE = BASE_DIR.parent / ".env.development"
+
+if os.path.isfile(DEV_ENV_FILE):
+    print(f"Using env file {DEV_ENV_FILE}")
+    env.read_env(env_file=str(DEV_ENV_FILE))
 
 DEBUG = env.bool("DJANGO_DEBUG", False)
 SECRET_KEY = SECRET_KEY = env("DJANGO_SECRET_KEY")
@@ -113,13 +118,9 @@ AUTH_PASSWORD_VALIDATORS = [
 # https://docs.djangoproject.com/en/3.1/topics/i18n/
 
 LANGUAGE_CODE = "en-us"
-
 TIME_ZONE = "UTC"
-
 USE_I18N = True
-
 USE_L10N = True
-
 USE_TZ = True
 
 
@@ -128,7 +129,7 @@ USE_TZ = True
 
 STATIC_ROOT = env("DJANGO_STATIC_ROOT")
 STATIC_URL = env("DJANGO_STATIC_URL")
-MEDIA_ROOT = env("DJANGO_MEDIA_PATH")
+MEDIA_ROOT = env("DJANGO_MEDIA_ROOT")
 MEDIA_URL = env("DJANGO_MEDIA_URL")
 
 

@@ -15,6 +15,6 @@ export default ({ mode }) => {
     plugins: [vue()],
     base: process.env.VITE_APP_BASE_PATH,
     emptyOutDir: true,
-    // envDir: '../',
+    envDir: '../',
   })
 }

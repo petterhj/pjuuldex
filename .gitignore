@@ -7,7 +7,6 @@ dist/
 data/
 media/
 
-.env*
 *.log
 *.db
 .pnp.js

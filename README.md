@@ -5,23 +5,42 @@ Pokémon TCG collection database.
 
 ## Running
 
+```sh
+# ./.env.development
+DJANGO_ALLOWED_HOSTS=localhost,127.0.0.1
+DJANGO_DEBUG=true
+DJANGO_SECRET_KEY="some-secret-key-for-django"
+DJANGO_SQLITE_DB_FILE=../data/db.sqlite3
+DJANGO_MEDIA_ROOT=../media/
+DJANGO_MEDIA_URL=/media/
+DJANGO_STATIC_ROOT=
+DJANGO_STATIC_URL=/static/
+POKEMONTCG_IO_API_KEY=
+VITE_API_BASE_URL=http://localhost:8000/
+```
+
 ### Backend
 
 ```sh
-$ make init-backend
+$ cd backend/
+$ python3 -m venv .venv
+$ source .venv/bin/activate
+$ pip install -r requirements.txt
 
 $ python manage.py makemigrations pokedex
 $ python manage.py migrate
 $ python manage.py createsuperuser
 
-$ make run-backend # Run development server locally
+$ python manage.py runserver # Run development server locally
 ```
 
 ### Frontend
 
 ```sh
-$ make init-frontend
-$ make run-frontend
+$ cd frontend/
+$ yarn install
+
+$ yarn dev
 ```
 
 ## Build

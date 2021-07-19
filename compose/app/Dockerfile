@@ -1,10 +1,10 @@
 FROM node:alpine
 
-COPY ./frontend /src
-COPY ./.env.build /src/.env
-RUN cat /src/.env
+COPY ./frontend /app/src
+COPY ./.env.build /app/.env
+RUN cat /app/.env
 
-WORKDIR /src
+WORKDIR /app/src
 
 RUN yarn install
 RUN yarn build
@@ -35,7 +35,7 @@ RUN chown -R django:django /app
 
 WORKDIR ${APP_HOME}
 
-COPY --chown=django:django --from=0 /src/dist /app/tmp
+COPY --chown=django:django --from=0 /app/src/dist /app/tmp
 COPY --chown=django:django ./backend/ /app/src
 
 COPY --chown=django:django ./compose/app/entrypoint.sh /entrypoint.sh
