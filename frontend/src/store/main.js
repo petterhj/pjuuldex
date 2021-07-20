@@ -32,7 +32,10 @@ export default {
       }
       state.currentSet = set
     },
-    updateInventory(state, inventory) {     
+    updateInventory(state, inventory) {
+      if (!inventory)
+        return
+
       // Update inventory data
       for (let set of state.sets) {
         if (set.id == inventory.set.id) {
@@ -88,7 +91,7 @@ export default {
         .finally(() => commit('setLoadingState', false))
     },
 
-    addInventory({ commit, dispatc }, variant_id) {
+    addInventory({ commit }, variant_id) {
       return http.post(`user/inventory/variant/${variant_id}/`)
         .then((response) => {
           commit('updateInventory', response.data)
@@ -111,11 +114,14 @@ export default {
       
       return http.get('user/inventory/recent/')
         .then((response) => {
+          // console.log("--------------")
+          // console.log(response)
           commit('setRecentInventory', response.data)
         })
         .catch((error) => {
           console.log(error)
           commit('setRecentInventory', [])
+          return Promise.reject(error);
         });
     },
   }

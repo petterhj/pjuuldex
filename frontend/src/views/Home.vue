@@ -3,10 +3,10 @@
     <div class="hero bg-dark">
       <div class="hero-body py-1 pl-1">
         <template v-if="!isAuthenticated">
-          <img src="/assets/images/oak.png" class="mr-1" />
+          <img src="/assets/images/oak.png" class="mr-2" />
         </template>
         <template v-if="isAuthenticated">
-          <img src="/assets/images/charmander.png" class="mr-1" />
+          <img src="/assets/images/charmander.png" class="mr-2" />
         </template>
         <div class="content m-0" v-if="!isAuthenticated">
           <h4 class="title white">Welcome!</h4>
@@ -44,8 +44,8 @@
               {{ set.name }}
             </router-link>
             <progress-bar
-              :card-count="set.card_count"
-              :collected-count="set.collected_count"
+              :card-count="set.card_count || 0"
+              :collected-count="set.collected_count || 0"
             />
           </div>
         </div>
@@ -87,6 +87,7 @@ export default {
   },
   methods: {
     ...mapActions('main', ['getRecentInventory']),
+    ...mapActions('auth', ['refreshToken']),
     // getSetProgressPercent(collected, total) {
     //   return Math.round((collected / total) * 100)
     // }

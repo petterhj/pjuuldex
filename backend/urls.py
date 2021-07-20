@@ -4,6 +4,8 @@ from django.contrib import admin
 from django.urls import re_path, path
 from django.views.generic import TemplateView
 
+from rest_framework_simplejwt.views import TokenVerifyView
+from dj_rest_auth.jwt_auth import get_refresh_view
 from dj_rest_auth.views import (
     LoginView,
     LogoutView,
@@ -38,9 +40,11 @@ urlpatterns = [
         'get': 'list',
     }), name='user-inventory-recent-list'),
 
-    path("user/", UserDetailsView.as_view(), name='rest_user'),
-    path("user/login/", LoginView.as_view(), name='rest_login'),
-    path("user/logout/", LogoutView.as_view(), name='rest_logout'),
+    path("user/", UserDetailsView.as_view(), name="rest_user"),
+    path("user/login/", LoginView.as_view(), name="rest_login"),
+    # path("user/token/verify/", TokenVerifyView.as_view(), name="token_verify"),
+    path("user/token/refresh/", get_refresh_view().as_view(), name="token_refresh"),
+    path("user/logout/", LogoutView.as_view(), name="rest_logout"),
 
     re_path("^admin/", admin.site.urls),
 ]

@@ -36,11 +36,11 @@ export default {
   },
   methods: {
     ...mapActions('main', ['getSets']),
-    ...mapActions('auth', ['getUser'])
+    // ...mapActions('auth', ['getUser'])
   },
   created() {
     this.getSets()
-    this.getUser()
+    // this.getUser()
   },
 }
 </script>

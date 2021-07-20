@@ -10,7 +10,7 @@ import '@mdi/font/css/materialdesignicons.css'
 import './assets/main.scss'
 
 
-const router = createRouter({
+export const router = createRouter({
     history: createWebHistory(import.meta.env.VITE_APP_BASE_PATH),
     routes,
 })

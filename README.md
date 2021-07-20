@@ -8,13 +8,15 @@ Pokémon TCG collection database.
 ```sh
 # ./.env.development
 DJANGO_ALLOWED_HOSTS=localhost,127.0.0.1
-DJANGO_DEBUG=true
+DJANGO_DEBUG=true # default false
 DJANGO_SECRET_KEY="some-secret-key-for-django"
 DJANGO_SQLITE_DB_FILE=../data/db.sqlite3
 DJANGO_MEDIA_ROOT=../media/
 DJANGO_MEDIA_URL=/media/
 DJANGO_STATIC_ROOT=
 DJANGO_STATIC_URL=/static/
+DJANGO_ACCESS_TOKEN_LIFETIME_MIN=1 # default 5
+DJANGO_REFRESH_TOKEN_LIFETIME_MIN=3 # default 1440
 POKEMONTCG_IO_API_KEY=
 VITE_API_BASE_URL=http://localhost:8000/
 ```

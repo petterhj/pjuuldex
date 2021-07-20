@@ -7,7 +7,9 @@
         </div>
         <div class="content m-0">
           <h4 class="title white">{{ set.name }}</h4>
-          <h6 class="subtitle text-gray-300">{{ set.card_count }} cards</h6>
+          <h6 class="subtitle text-gray-300">
+            {{ set.card_count }} cards / {{ set.release_date }}
+          </h6>
         </div>
       </div>
     </div>
@@ -104,9 +106,10 @@ export default {
 .hero div.symbol {
   width: 40px;
   height: 40px;
+  text-align: center;
 }
 .hero div.symbol > img {
-  width: inherit;
+  /* width: inherit; */
   height: inherit;
 }
 

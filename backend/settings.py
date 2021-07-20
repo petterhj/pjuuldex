@@ -12,6 +12,7 @@ https://docs.djangoproject.com/en/3.1/ref/settings/
 
 import os
 from pathlib import Path
+from datetime import timedelta
 
 import environ
 
@@ -77,11 +78,22 @@ TEMPLATES = [
 WSGI_APPLICATION = "wsgi.application"
 
 REST_SESSION_LOGIN = True
+REST_USE_JWT = True
+JWT_AUTH_COOKIE = 'auth'
+SIMPLE_JWT = {
+    'ACCESS_TOKEN_LIFETIME': timedelta(
+        minutes=env.int("DJANGO_ACCESS_TOKEN_LIFETIME_MIN", 5)
+    ),
+    'REFRESH_TOKEN_LIFETIME': timedelta(
+        minutes=env.int("DJANGO_REFRESH_TOKEN_LIFETIME_MIN", 1440)
+    ),
+}
 REST_FRAMEWORK = {
     "DEFAULT_AUTHENTICATION_CLASSES": (
         "rest_framework.authentication.SessionAuthentication",
         "rest_framework.authentication.TokenAuthentication",
-    )
+        "dj_rest_auth.jwt_auth.JWTCookieAuthentication",
+    ),
 }
 
 # CORS
