@@ -63,7 +63,7 @@ $ docker-compose build
 # ./.env.local
 DJANGO_ALLOWED_HOSTS=localhost,127.0.0.1
 DJANGO_DEBUG=true
-DJANGO_MEDIA_PATH=/app/media/
+DJANGO_MEDIA_ROOT=/app/media/
 DJANGO_MEDIA_URL=/pjuuldex/media/
 DJANGO_SECRET_KEY="some-secret-key-for-django"
 DJANGO_SQLITE_DB_FILE=/app/data/db.sqlite3
@@ -86,9 +86,9 @@ $ docker load < pjuuldex.tar
 $ docker run \
     --env-file .env.production \
     -p 8081:8000 \
-    -v data:/app/data/ \
-    -v media:/app/media/ \
-    -v dist:/app/dist/ \
+    -v /path/to/data:/app/data/ \
+    -v /path/to/media:/app/media/ \
+    -v /path/to/dist:/app/dist/ \
     --name pjuuldex pjuuldex
 ```
 
