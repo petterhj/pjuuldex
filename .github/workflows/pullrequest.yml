@@ -1,0 +1,13 @@
+name: Pull request
+
+on:
+  pull_request:
+    types:
+      - opened
+      - synchronize
+    branches:
+      - main
+
+jobs:
+  tests:
+    uses: ./.github/workflows/tests.yml
