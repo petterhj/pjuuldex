@@ -28,6 +28,7 @@ if os.path.isfile(DEV_ENV_FILE):
 DEBUG = env.bool("DJANGO_DEBUG", False)
 SECRET_KEY = SECRET_KEY = env("DJANGO_SECRET_KEY")
 ALLOWED_HOSTS = env.list("DJANGO_ALLOWED_HOSTS")
+CSRF_TRUSTED_ORIGINS = env.list("DJANGO_CSRF_TRUSTED_ORIGINS")
 
 # Application definition
 INSTALLED_APPS = [
