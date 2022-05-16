@@ -10,7 +10,7 @@
         "@vuelidate/core": "^2.0.0-alpha.21",
         "@vuelidate/validators": "^2.0.0-alpha.18",
         "autoprefixer": "latest",
-        "axios": "^0.21.1",
+        "axios": "^0.21.2",
         "dayjs": "^1.10.5",
         "jetbrains-mono": "^1.0.3",
         "postcss": "^8.3.0",
