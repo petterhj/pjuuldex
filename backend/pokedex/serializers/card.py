@@ -8,6 +8,12 @@ class CardVariantSerializer(serializers.ModelSerializer):
     aliases = serializers.ListField(source='variant.aliases')
     inventory_count = serializers.SerializerMethodField()
 
+    def to_representation(self, instance):
+        response = super().to_representation(instance)
+        if instance.image:
+            response["image"] = instance.image.url
+        return response
+
     def get_inventory_count(self, obj):
         user = self.context['request'].user
 
@@ -30,6 +36,12 @@ class CardVariantSerializer(serializers.ModelSerializer):
 class CardSerializer(serializers.ModelSerializer):
     variants = CardVariantSerializer(many=True)
     inventory_count = serializers.SerializerMethodField()
+
+    def to_representation(self, instance):
+        response = super().to_representation(instance)
+        if instance.image:
+            response["image"] = instance.image.url
+        return response
 
     def get_inventory_count(self, obj):
         user = self.context['request'].user

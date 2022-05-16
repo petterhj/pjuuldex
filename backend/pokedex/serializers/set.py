@@ -7,6 +7,14 @@ class SetSerializer(serializers.ModelSerializer):
     collected_count = serializers.SerializerMethodField()
     inventory_count = serializers.SerializerMethodField()
 
+    def to_representation(self, instance):
+        response = super().to_representation(instance)
+        if instance.logo:
+            response["logo"] = instance.logo.url
+        if instance.symbol:
+            response["symbol"] = instance.symbol.url
+        return response
+
     def get_collected_count(self, obj):
         user = self.context['request'].user
 
