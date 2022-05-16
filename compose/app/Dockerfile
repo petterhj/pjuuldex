@@ -6,8 +6,8 @@ RUN cat /app/.env
 
 WORKDIR /app/src
 
-RUN yarn install
-RUN yarn build
+RUN npm install
+RUN npm run build
 
 
 FROM python:3.9-slim-buster

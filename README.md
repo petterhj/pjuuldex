@@ -40,9 +40,9 @@ $ python manage.py runserver # Run development server locally
 
 ```sh
 $ cd frontend/
-$ yarn install
+$ npm install
 
-$ yarn dev
+$ npm run dev
 ```
 
 ## Build
